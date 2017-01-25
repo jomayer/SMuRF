@@ -1,12 +1,19 @@
 # SMuRFS
 <h1> The SMuRFS algorithm </h1>
 
+<b> Date: </b> 1/25/2017
+
 <b> Authors: </b> Joshua Mayer, Raziur Rahman, Souparno Ghosh, Randip Pal
 
 <b> Platform: </b> R Version 3.3.2
 
 <b> Required packages: </b>  partykit, Formula, strucchange, matrixStats
 
+<b> Maintainer: </b> Joshua Mayer <emph> joshua.mayer@ttu.edu </i> 
+
+<b> Description </b> The following is the function to run the Sequential Multi Response Feature Selection (SMURFS). The function selects a subset of features of size <emph> mtry </emph> and a bootstrap sample of size <emph> n </emph>, grows a tree from those features and that bootstrap sample using the conditional inference framework (Hothornet <i> et al. </i>, 2006), then selects the features that are significant at any node of the tree. Features that are not selected are tested on a test set that is a subset of the data. Features that fail the second test are removed from consideration. After <i> ntree </i> iterations the features that survive are the selected features.
+
+<h2> Usage </h2>
 
 <b> Inputs </b>
 
@@ -20,4 +27,4 @@
 ################################################################
 ################################################################
 
-The following is the function to run the Sequential Multi Response Feature Selection (SMURFS). The function grows a tree using the conditional inference framework (Hothornet <i> et al. </i>, 2006) then selects the features that are significant at any node of the tree. Features that are not selected are tested on a test set that is a subset of the data. Features that fail the second test are removed from consideration. 
+
