@@ -15,7 +15,9 @@
 
 <h2> Usage </h2>
 
+<xmp>
 SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, response.position)
+</xmp>
 
 <b> Inputs </b>
 
