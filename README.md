@@ -40,51 +40,48 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
 <h2> Value </h2> A list of survived covariates.
 
 <h2> Examples </h2> 
-<code>
-library(MASS)
-</code>
-<code>
-library(Matrix)
-</code>
-<code>
-beta <- c(rep(seq(from = 2, to = 4, by = 0.5), 4), rep(0,980)) 
-</code>
-sigma.y <- matrix(c(1,0.7,0.7,1), nrow = 2,  byrow = F)
 
-omega <- function(n)
+    library(MASS)
 
-{
+    library(Matrix)
 
-my.mat <- matrix(0.7, n, n)
+    beta <- c(rep(seq(from = 2, to = 4, by = 0.5), 4), rep(0,980)) 
+   
+    sigma.y <- matrix(c(1,0.7,0.7,1), nrow = 2,  byrow = F)
 
-diag(my.mat) <- rep(1,n)
+    omega <- function(n)
 
-return(my.mat)
+    {
 
-}
+    my.mat <- matrix(0.7, n, n)
 
-sigma.x <- bdiag(omega(20), diag(1,980))
+    diag(my.mat) <- rep(1,n)
 
-set.seed(100)
+    return(my.mat)
 
-xx <- mvrnorm(200, rep(0,1000), diag(1,1000))
+    }
 
-means <- xx %*% beta
+    sigma.x <- bdiag(omega(20), diag(1,980))
 
-means.mat <- matrix(c(means,means), nrow = 200, byrow = F)
+    set.seed(100)
+    
+    xx <- mvrnorm(200, rep(0,1000), diag(1,1000))
 
-set.seed(100)
+    means <- xx %*% beta
 
-yy <- t(sapply(1:200, function(i) mvrnorm(n=1, mu = rep(means[i,],2), Sigma = sigma.y)))
+    means.mat <- matrix(c(means,means), nrow = 200, byrow = F)
 
-dat <- as.data.frame(cbind(xx,yy))
+    set.seed(100)
 
-set.seed(100)
+    yy <- t(sapply(1:200, function(i) mvrnorm(n=1, mu = rep(means[i,],2), Sigma = sigma.y)))
 
-var.select <- SMuRFS(formula = V1001+V1002 ~., data = dat, ntree = 500, mtry = 5, alpha = 0.05, 
+    dat <- as.data.frame(cbind(xx,yy))
 
-              prop.test = .632, response.position = c(1001,1002))
-</code>
+    set.seed(100)
+
+    var.select <- SMuRFS(formula = V1001+V1002 ~., data = dat, ntree = 500, mtry = 5, alpha = 0.05, 
+    prop.test = .632, response.position = c(1001,1002))
+
 ################################################################
 ################################################################
 
