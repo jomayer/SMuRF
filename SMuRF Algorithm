@@ -1,0 +1,113 @@
+SMuRF <- function(formula, data, ntree, mtry, alpha = 0.05, prop.test = .632, response.position)
+{
+ require(partykit)
+ require(Formula)
+ require(strucchange)
+ ### formula is something of class formula
+
+ ### data = data.frame
+
+ ### ntree = number of trees grown
+
+ ### mtry = size of variables selected at each tree, main tuning parm
+ # I try to keep it low (like ~40 for gdsc)
+
+ ### alpha = control for P(Type I error)
+
+ ### prop.test = proption of data used in test set
+ # default is prop of data that would be selected w/ bootstrap,
+ # can also be tuned
+
+ ### response.position = which column the responses are located. Can be done automatically
+ # using package Formula, but breaks down in high dimensions. 
+
+ 
+ # split up the data to response and xs 
+ response <- names(data[,response.location])
+ xs <- names(data[,-res.location])
+ data <- data[complete.cases(data),c(xs,response)]
+ n <- nrow(data)
+ ### Fun to determine min-splits, will need later
+ getUsefulPredictors <- function(x) 
+ {
+ varid <- nodeapply(x, ids = nodeids(x),
+ FUN = function(n) split_node(n)$varid)
+ varid <- unique(unlist(varid))
+ names(data_party(x))[varid]
+ }
+ covs <- list()
+ ### Since things are done sequentially, need to use a for loop
+ # lapply prob wont work here
+ for(i in 1:ntree)
+ { 
+   cov.size <- length(xs) 
+   split.n <- sample(1:n, size = ceiling(prop.test*n), replace = FALSE)
+   samp.test <- data[split.n,]
+   samp.test <- as.data.frame(samp.test)
+   samp.cov <- sample(xs, size = min(mtry, cov.size), replace = F)
+   bs.samp <- as.data.frame(data[,c(samp.cov, response)])
+   bs.n <- sample(1:n, size = n, replace = TRUE)
+   newdata.BS <- as.data.frame(bs.samp[bs.n, c(samp.cov, response)])
+   bs.tree <- ctree(formula, data = newdata.BS, control = ctree_control(mincriterion = 1-alpha))
+   #min.p.predictors <- getUsefulPredictors(bs.tree)
+   pvals.teststat <- sctest(bs.tree)
+   ### break down p-values in 3 cases
+   
+   ### CASE I: root node only, nothing significant return no sig preds
+   if(!is.list(pvals.teststat))
+   {
+    usefulPredictors <- NULL
+   }
+   else  ### else there is a split
+   {
+    pvals.tree <- list()
+    for(k in 1:length(pvals.teststat)) ### get p-values
+    {
+     pvals.tree[[k]] <- pvals.teststat[[k]][2,]
+    }
+    pvals.tree <- do.call(rbind, pvals.tree)
+    ### if there is 1 split, the pvals will be a vector
+    ### > 1 split results in a matrix
+    if(is.matrix(pvals.tree))                          
+    {
+     usefulPredictors <- samp.cov[colMins(pvals.tree) <= alpha] #sig in 1 node if min is sig
+    }
+    else
+    {
+     usefulPredictors <- samp.cov[min(pvals.tree) <= alpha]
+    }
+   samp.cov <- samp.cov[!(samp.cov %in% usefulPredictors)] #remove sig covs
+   }
+   test.cov <- samp.cov  ##test the rest
+   if(length(test.cov) == 0)
+   {
+   xs <- xs
+   }
+   else
+   {
+   my.ind.test <- function(x)
+   {
+      log.p.val <- log(pvalue(independence_test(y ~ x, teststat = "quadratic", 
+      distribution = "asymptotic", alternative = "two.sided")))
+      return(log.p.val)
+   }
+  xList <- list()
+  newdata.BS.test <- samp.test[,c(test.cov,response)]
+  for(j in 1:length(response))
+  {
+  suppressWarnings(xList[[j]] <- which(names(newdata.BS.test) != response[j]))
+  }
+  xselect <- Reduce(intersect,xList)  ## find location of xs
+  y <- newdata.BS.test[,response]
+  y <- as.matrix(y)
+  log.p.val <- suppressWarnings(sapply(xselect, function(i) my.ind.test(newdata.BS.test[[i]])))
+  pvals  <- exp(log.p.val)
+  pvals <- 1 - (1 - pvals)^(length(pvals))
+  remove.cov <- test.cov[pvals > alpha]
+  xs <- xs[!(xs %in% remove.cov)]
+  }
+  covs[[i]] <- xs
+ }
+ return(covs)
+}
+
