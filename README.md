@@ -6,4 +6,4 @@ Required packages:  partykit, Formula, strucchange, matrixStats
 ################################################################
 ################################################################
 
-The following is the function to run the Sequential Multi Response Feature Selection (SMURFS)
+The following is the function to run the Sequential Multi Response Feature Selection (SMURFS). The function grows a tree using the conditional inference framework (Hothornet <i> et al. </i>, 2006)
