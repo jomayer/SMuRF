@@ -61,8 +61,8 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
     yy <- t(sapply(1:200, function(i) mvrnorm(n=1, mu = rep(means[i,],3), Sigma = sigma.y)))
     dat <- as.data.frame(cbind(xx,yy))
     set.seed(100)
-    var.select <- SMuRFS(formula = V1001 + V1002 + V1003 ~., data = dat, ntree = 500, mtry = 8, alpha = 0.05, 
-    prop.test = .632, response.position = c(1001,1002,1003))
+    var.select <- SMuRFS(formula = V1001 + V1002 + V1003 ~., data = dat, ntree = 500, mtry = 8,
+    alpha = 0.05, prop.test = .632, response.position = c(1001,1002,1003))
 
 ################################################################
 ################################################################
