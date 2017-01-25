@@ -1,10 +1,14 @@
 # SMuRFS
-The SMuRF algorithm
-Authors: Joshua Mayer, Raziur Rahman, Souparno Ghosh, Randip Pal
-Platform: R Version 3.3.2
-Required packages:  partykit, Formula, strucchange, matrixStats
-###############################################################
-#########<b> inputs </b> ######################################
+<b> The SMuRF algorithm </b>
+
+<b> Authors: </b> Joshua Mayer, Raziur Rahman, Souparno Ghosh, Randip Pal
+
+<b> Platform: </b> R Version 3.3.2
+
+<b> Required packages: </b>  partykit, Formula, strucchange, matrixStats
+
+
+<b> Inputs </b>
 Formula: 
 ################################################################
 ################################################################
