@@ -1,9 +1,10 @@
-SMuRFS <- function(formula, data, ntree, mtry, alpha = 0.05, prop.test = .632, response.position)
+SMuRFS <- function(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, response.position)
 {
  require(partykit)
  require(Formula)
  require(strucchange)
  require(matrixStats)
+ require(coin)
  ### formula is something of class formula
 
  ### data = data.frame
@@ -24,8 +25,8 @@ SMuRFS <- function(formula, data, ntree, mtry, alpha = 0.05, prop.test = .632, r
 
  
  # split up the data to response and xs 
- response <- names(data[,response.location])
- xs <- names(data[,-res.location])
+ response <- names(data[,response.position])
+ xs <- names(data[,-response.position])
  data <- data[complete.cases(data),c(xs,response)]
  n <- nrow(data)
  ### Fun to determine min-splits, will need later
