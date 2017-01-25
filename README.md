@@ -10,7 +10,13 @@
 
 <b> Inputs </b>
 
-<strong> Formula: </strong> A object of class formula. 
+<strong> Formula: </strong> A object of class formula. This formula will give the inherent regression equation.
+
+<strong> data: </strong> A object of class data frame. Names in the data frame must match the names in the formula. Missing data are removed.
+
+<strong> ntree: </strong> An integer greater than or equal to 1. The number of trees grown for the SMuRFS algorithm.
+
+<strong> mtry: </strong> An integer greater than or equal to 1. The number of variables sampled for each tree.
 ################################################################
 ################################################################
 
