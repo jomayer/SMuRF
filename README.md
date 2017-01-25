@@ -42,11 +42,13 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
 <h2> Examples </h2> 
 <code>
 library(MASS)
-
+</code>
+<code>
 library(Matrix)
-
+</code>
+<code>
 beta <- c(rep(seq(from = 2, to = 4, by = 0.5), 4), rep(0,980)) 
-
+</code>
 sigma.y <- matrix(c(1,0.7,0.7,1), nrow = 2,  byrow = F)
 
 omega <- function(n)
