@@ -1,0 +1,2 @@
+# SMuRF
+The SMuRF algorithm
