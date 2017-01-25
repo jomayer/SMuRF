@@ -42,25 +42,45 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
 <h2> Examples </h2> 
 <code>
 library(MASS)
+
 library(Matrix)
+
 beta <- c(rep(seq(from = 2, to = 4, by = 0.5), 4), rep(0,980)) 
+
 sigma.y <- matrix(c(1,0.7,0.7,1), nrow = 2,  byrow = F)
+
 omega <- function(n)
+
 {
+
 my.mat <- matrix(0.7, n, n)
+
 diag(my.mat) <- rep(1,n)
+
 return(my.mat)
+
 }
+
 sigma.x <- bdiag(omega(20), diag(1,980))
+
 set.seed(100)
+
 xx <- mvrnorm(200, rep(0,1000), diag(1,1000))
+
 means <- xx %*% beta
+
 means.mat <- matrix(c(means,means), nrow = 200, byrow = F)
+
 set.seed(100)
+
 yy <- t(sapply(1:200, function(i) mvrnorm(n=1, mu = rep(means[i,],2), Sigma = sigma.y)))
+
 dat <- as.data.frame(cbind(xx,yy))
+
 set.seed(100)
+
 var.select <- SMuRFS(formula = V1001+V1002 ~., data = dat, ntree = 500, mtry = 5, alpha = 0.05, 
+
               prop.test = .632, response.position = c(1001,1002))
 </code>
 ################################################################
