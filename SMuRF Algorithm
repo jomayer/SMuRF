@@ -3,6 +3,7 @@ SMuRFS <- function(formula, data, ntree, mtry, alpha = 0.05, prop.test = .632, r
  require(partykit)
  require(Formula)
  require(strucchange)
+ require(matrixStats)
  ### formula is something of class formula
 
  ### data = data.frame
