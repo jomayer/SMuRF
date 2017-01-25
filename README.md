@@ -35,7 +35,7 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
 
 <strong> response.position: </strong>  The column of which the responses are located. It could be done automatically with the Formula package, but this breaks down in high dimensions.
 
-<strong> Details: </strong> The following is the function to run the Sequential Multi Response Feature Selection (SMURFS). The function selects a subset of features of size <emph> mtry </emph> and a bootstrap sample of size <emph> n </emph>, grows a tree from those features and that bootstrap sample using the conditional inference framework (Hothornet <i> et al. </i>, 2006), then selects the features that are significant at any node of the tree. Features that are not selected are tested on a test set that is a subset of the data. Features that fail the second test are removed from consideration. After <i> ntree </i> iterations the features that survive are the selected features.
+<h3> Details </h3> The following is the function to run the Sequential Multi Response Feature Selection (SMURFS). The function selects a subset of features of size <emph> mtry </emph> and a bootstrap sample of size <emph> n </emph>, grows a tree from those features and that bootstrap sample using the conditional inference framework (Hothornet <i> et al. </i>, 2006), then selects the features that are significant at any node of the tree. Features that are not selected are tested on a test set that is a subset of the data. Features that fail the second test are removed from consideration. After <i> ntree </i> iterations the features that survive are the selected features.
 ################################################################
 ################################################################
 
