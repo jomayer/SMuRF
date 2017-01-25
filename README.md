@@ -7,7 +7,7 @@
 
 <b> Platform: </b> R Version 3.3.2
 
-<b> Required packages: </b>  partykit, Formula, strucchange, matrixStats
+<b> Required packages: </b>  partykit, Formula, strucchange, matrixStats, coin
 
 <b> Maintainer: </b> Joshua Mayer <emph> joshua.mayer@ttu.edu </emph> 
 
@@ -36,6 +36,33 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
 <strong> response.position: </strong>  The column of which the responses are located. It could be done automatically with the Formula package, but this breaks down in high dimensions.
 
 <h2> Details </h2> The following is the function to run the Sequential Multi Response Feature Selection (SMURFS). The function selects a subset of features of size <emph> mtry </emph> and a bootstrap sample of size <emph> n </emph>, grows a tree from those features and that bootstrap sample using the conditional inference framework (Hothornet <i> et al. </i>, 2006), then selects the features that are significant at any node of the tree. Features that are not selected are tested on a test set that is a subset of the data. Features that fail the second test are removed from consideration. After <i> ntree </i> iterations the features that survive are the selected features.
+
+<h2> Value </h2> A list of survived covariates.
+
+<h2> Examples </h2> 
+<code>
+library(MASS)
+library(Matrix)
+beta <- c(rep(seq(from = 2, to = 4, by = 0.5), 4), rep(0,980)) 
+sigma.y <- matrix(c(1,0.7,0.7,1), nrow = 2,  byrow = F)
+omega <- function(n)
+{
+my.mat <- matrix(0.7, n, n)
+diag(my.mat) <- rep(1,n)
+return(my.mat)
+}
+sigma.x <- bdiag(omega(20), diag(1,980))
+set.seed(100)
+xx <- mvrnorm(200, rep(0,1000), diag(1,1000))
+means <- xx %*% beta
+means.mat <- matrix(c(means,means), nrow = 200, byrow = F)
+set.seed(100)
+yy <- t(sapply(1:200, function(i) mvrnorm(n=1, mu = rep(means[i,],2), Sigma = sigma.y)))
+dat <- as.data.frame(cbind(xx,yy))
+set.seed(100)
+var.select <- SMuRFS(formula = V1001+V1002 ~., data = dat, ntree = 500, mtry = 5, alpha = 0.05, 
+              prop.test = .632, response.position = c(1001,1002))
+</code>
 ################################################################
 ################################################################
 
