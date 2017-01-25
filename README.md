@@ -56,7 +56,6 @@ SMuRFS(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .632, respons
     set.seed(100)    
     xx <- mvrnorm(200, rep(0,1000), sigma.x)
     means <- xx %*% beta
-    means.mat <- matrix(c(means,means), nrow = 200, byrow = F)
     set.seed(100)
     yy <- t(sapply(1:200, function(i) mvrnorm(n=1, mu = rep(means[i,],3), Sigma = sigma.y)))
     dat <- as.data.frame(cbind(xx,yy))
