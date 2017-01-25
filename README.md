@@ -1,5 +1,5 @@
 # SMuRFS
-<b> The SMuRF algorithm </b>
+<h1> The SMuRFS algorithm </h1>
 
 <b> Authors: </b> Joshua Mayer, Raziur Rahman, Souparno Ghosh, Randip Pal
 
@@ -10,7 +10,7 @@
 
 <b> Inputs </b>
 
-<strong> Formula: </strong> 
+<strong> Formula: </strong> A object of class formula. 
 ################################################################
 ################################################################
 
