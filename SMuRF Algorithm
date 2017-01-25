@@ -1,4 +1,4 @@
-SMuRF <- function(formula, data, ntree, mtry, alpha = 0.05, prop.test = .632, response.position)
+SMuRFS <- function(formula, data, ntree, mtry, alpha = 0.05, prop.test = .632, response.position)
 {
  require(partykit)
  require(Formula)
