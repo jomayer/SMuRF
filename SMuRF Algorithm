@@ -29,14 +29,6 @@ SMuRFS <- function(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .
  xs <- names(data[,-response.position])
  data <- data[complete.cases(data),c(xs,response)]
  n <- nrow(data)
- ### Fun to determine min-splits, will need later
- getUsefulPredictors <- function(x) 
- {
- varid <- nodeapply(x, ids = nodeids(x),
- FUN = function(n) split_node(n)$varid)
- varid <- unique(unlist(varid))
- names(data_party(x))[varid]
- }
  covs <- list()
  ### Since things are done sequentially, need to use a for loop
  # lapply prob wont work here
@@ -51,7 +43,6 @@ SMuRFS <- function(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .
    bs.n <- sample(1:n, size = n, replace = TRUE)
    newdata.BS <- as.data.frame(bs.samp[bs.n, c(samp.cov, response)])
    bs.tree <- ctree(formula, data = newdata.BS, control = ctree_control(mincriterion = 1-alpha))
-   #min.p.predictors <- getUsefulPredictors(bs.tree)
    pvals.teststat <- sctest(bs.tree)
    ### break down p-values in 3 cases
    
@@ -68,8 +59,8 @@ SMuRFS <- function(formula, data, ntree = 500, mtry, alpha = 0.05, prop.test = .
      pvals.tree[[k]] <- pvals.teststat[[k]][2,]
     }
     pvals.tree <- do.call(rbind, pvals.tree)
-    ### if there is 1 split, the pvals will be a vector
-    ### > 1 split results in a matrix
+    ### CASE II: if there is 1 split, the pvals will be a vector
+    ### CASE III: > 1 split results in a matrix
     if(is.matrix(pvals.tree))                          
     {
      usefulPredictors <- samp.cov[colMins(pvals.tree) <= alpha] #sig in 1 node if min is sig
